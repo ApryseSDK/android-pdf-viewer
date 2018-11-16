@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">AndroidPDFViewer</string>
+    <string name="open_pdf_android">Open PDF with Android SDK</string>
+    <string name="open_pdf_pdftron">Open PDF with PDFTron</string>
+</resources>
