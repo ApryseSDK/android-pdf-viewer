@@ -8,44 +8,22 @@
 
     <Button
         android:id="@+id/open_pdf_android"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/open_pdf_android"
+        app:layout_constraintBottom_toTopOf="@id/open_pdf_pdftron"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/pdf_view_android"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/pdf_view_android"
-        app:layout_constraintHorizontal_weight="1"/>
-
-    <ImageView
-        android:id="@+id/pdf_view_android"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintLeft_toRightOf="@id/open_pdf_android"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/pdf_view_pdftron"
-        app:layout_constraintHorizontal_weight="2"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/open_pdf_pdftron"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/open_pdf_pdftron"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/pdf_view_pdftron"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="@id/pdf_view_pdftron"
-        app:layout_constraintHorizontal_weight="1"/>
-
-    <ImageView
-        android:id="@+id/pdf_view_pdftron"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintLeft_toRightOf="@id/open_pdf_pdftron"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/pdf_view_android"
-        app:layout_constraintHorizontal_weight="2"/>
+        app:layout_constraintTop_toBottomOf="@id/open_pdf_android" />
 
 </android.support.constraint.ConstraintLayout>
