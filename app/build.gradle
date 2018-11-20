@@ -11,6 +11,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
+        manifestPlaceholders = [pdftronLicenseKey:PDFTRON_LICENSE_KEY]
     }
     buildTypes {
         release {

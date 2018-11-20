@@ -13,6 +13,11 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
 
+        <!-- Add license key in meta-data tag here -->
+        <meta-data
+            android:name="pdftron_license_key"
+            android:value="${pdftronLicenseKey}"/>
+
         <activity
             android:name=".MainActivity"
             android:theme="@style/CustomAppTheme"
