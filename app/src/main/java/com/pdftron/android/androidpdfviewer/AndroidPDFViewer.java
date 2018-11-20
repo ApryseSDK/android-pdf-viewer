@@ -26,43 +26,58 @@ public class AndroidPDFViewer extends AppCompatActivity {
     private static final String FILE_NAME = "sample_cache.pdf";
     private PdfRenderer mPdfRenderer;
     private PdfRenderer.Page mPdfPage;
+    private ImageView mImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_android_pdfviewer);
 
-        ImageView pdfViewer = findViewById(R.id.pdf_view_android);
-        openPdfWithAndroidSDK(pdfViewer);
+        mImageView = findViewById(R.id.pdf_view_android);
+        try {
+            openPdfWithAndroidSDK(mImageView, 0);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mPdfRenderer.close();
-        mPdfPage.close();
+        if (mPdfPage != null) {
+            mPdfPage.close();
+        }
+        if (mPdfRenderer != null) {
+            mPdfRenderer.close();
+        }
     }
 
     /**
-     * Opens the first page of the PDF document.
-     * @param imageView used to display the PDF
+     * Render a given page in the PDF document into an ImageView.
+     *
+     * @param imageView  used to display the PDF
+     * @param pageNumber page of the PDF to view (index starting at 0)
      */
-    void openPdfWithAndroidSDK(ImageView imageView) {
-        final File pdfFile = new File(getCacheDir(), FILE_NAME);
-        try {
-            // Copy the PDF file in resource folder locally so PdfRenderer can handle it
-            copyToLocalCache(pdfFile, R.raw.sample);
-            ParcelFileDescriptor fileDescriptor = ParcelFileDescriptor.open(pdfFile, ParcelFileDescriptor.MODE_READ_ONLY);
-            // PdfRenderer we will use to
-            mPdfRenderer = new PdfRenderer(fileDescriptor);
-            mPdfPage = mPdfRenderer.openPage(0);
-            Bitmap bitmap = Bitmap.createBitmap(mPdfPage.getWidth(), mPdfPage.getHeight(),
-                    Bitmap.Config.ARGB_8888);
-            mPdfPage.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY);
-            imageView.setImageBitmap(bitmap);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    void openPdfWithAndroidSDK(ImageView imageView, int pageNumber) throws IOException {
+        // Copy sample.pdf from raw resource folder into local cache, so PdfRenderer can handle it
+        File fileCopy = new File(getCacheDir(), FILE_NAME);
+        copyToLocalCache(fileCopy, R.raw.sample);
+
+        // We will get a page from the PDF file by calling PdfRenderer.openPage
+        ParcelFileDescriptor fileDescriptor =
+                ParcelFileDescriptor.open(fileCopy,
+                        ParcelFileDescriptor.MODE_READ_ONLY);
+        mPdfRenderer = new PdfRenderer(fileDescriptor);
+        mPdfPage = mPdfRenderer.openPage(pageNumber);
+
+        // Create a new bitmap and render the page contents on to it
+        Bitmap bitmap = Bitmap.createBitmap(mPdfPage.getWidth(),
+                mPdfPage.getHeight(),
+                Bitmap.Config.ARGB_8888);
+        mPdfPage.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY);
+
+        // Set the bitmap in the ImageView so we can view it
+        imageView.setImageBitmap(bitmap);
     }
 
     /**
@@ -71,22 +86,19 @@ public class AndroidPDFViewer extends AppCompatActivity {
      * @param outputFile  location of copied file
      * @param pdfResource pdf resource file
      */
-    void copyToLocalCache(File outputFile, @RawRes int pdfResource) {
+    void copyToLocalCache(File outputFile, @RawRes int pdfResource) throws IOException {
         if (!outputFile.exists()) {
-            try {
-                final InputStream pdf = getResources().openRawResource(pdfResource);
-                final FileOutputStream output;
-                output = new FileOutputStream(outputFile);
-                final byte[] buffer = new byte[1024];
-                int size;
-                while ((size = pdf.read(buffer)) != -1) {
-                    output.write(buffer, 0, size);
-                }
-                pdf.close();
-                output.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+            InputStream input = getResources().openRawResource(pdfResource);
+            FileOutputStream output;
+            output = new FileOutputStream(outputFile);
+            byte[] buffer = new byte[1024];
+            int size;
+            // Just copy the entire contents of the file
+            while ((size = input.read(buffer)) != -1) {
+                output.write(buffer, 0, size);
             }
+            input.close();
+            output.close();
         }
     }
 }
