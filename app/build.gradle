@@ -35,6 +35,6 @@ dependencies {
 
     implementation 'com.android.support:multidex:1.0.3'
 
-    implementation "com.pdftron:pdftron:6.10.3"
-    implementation "com.pdftron:tools:6.10.3"
+    implementation "com.pdftron:pdftron:6.10.4"
+    implementation "com.pdftron:tools:6.10.4"
 }
