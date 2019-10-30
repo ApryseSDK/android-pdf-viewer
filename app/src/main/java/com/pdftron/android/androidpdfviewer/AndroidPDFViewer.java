@@ -5,8 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.pdf.PdfRenderer;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
-import android.support.annotation.RawRes;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
 
@@ -15,6 +13,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+
+import androidx.annotation.RawRes;
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * Activity that opens the first page of a PDF document using {@link PdfRenderer}
